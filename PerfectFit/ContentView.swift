@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import TabularData
+import ComposableArchitecture
 
 enum ClubType: String, CaseIterable {
     case wood = "WOODS"
@@ -60,7 +61,7 @@ struct ContentView: View {
     }
     
     private func userSwingDataView() -> some View {
-        Text("User Swing Data")
+        CounterView(store: PerfectFitApp.store)
     }
     
     private func shaftListView() -> some View {

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A5B014292D66A9B100DAEE94 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = A5B014282D66A9B100DAEE94 /* ComposableArchitecture */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		A582D3FE2D5C0A7D00B0EF04 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +33,22 @@
 		A582D4072D5C0A7D00B0EF04 /* PerfectFitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PerfectFitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A5B0142B2D66B5D600DAEE94 /* Exceptions for "PerfectFit" folder in "PerfectFit" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A582D3EA2D5C0A7B00B0EF04 /* PerfectFit */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A582D3ED2D5C0A7B00B0EF04 /* PerfectFit */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A5B0142B2D66B5D600DAEE94 /* Exceptions for "PerfectFit" folder in "PerfectFit" target */,
+			);
 			path = PerfectFit;
 			sourceTree = "<group>";
 		};
@@ -52,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5B014292D66A9B100DAEE94 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +96,7 @@
 				A582D3ED2D5C0A7B00B0EF04 /* PerfectFit */,
 				A582D4002D5C0A7D00B0EF04 /* PerfectFitTests */,
 				A582D40A2D5C0A7D00B0EF04 /* PerfectFitUITests */,
+				A5B014272D66A9B100DAEE94 /* Frameworks */,
 				A582D3EC2D5C0A7B00B0EF04 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +109,13 @@
 				A582D4072D5C0A7D00B0EF04 /* PerfectFitUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A5B014272D66A9B100DAEE94 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +138,7 @@
 			);
 			name = PerfectFit;
 			packageProductDependencies = (
+				A5B014282D66A9B100DAEE94 /* ComposableArchitecture */,
 			);
 			productName = PerfectFit;
 			productReference = A582D3EB2D5C0A7B00B0EF04 /* PerfectFit.app */;
@@ -195,6 +222,9 @@
 			);
 			mainGroup = A582D3E22D5C0A7B00B0EF04;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A5B014262D66A98D00DAEE94 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A582D3EC2D5C0A7B00B0EF04 /* Products */;
 			projectDirPath = "";
@@ -399,6 +429,7 @@
 				DEVELOPMENT_TEAM = QW8SY24C8U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PerfectFit/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -428,6 +459,7 @@
 				DEVELOPMENT_TEAM = QW8SY24C8U;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PerfectFit/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -558,6 +590,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A5B014262D66A98D00DAEE94 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.17.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A5B014282D66A9B100DAEE94 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5B014262D66A98D00DAEE94 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A582D3E32D5C0A7B00B0EF04 /* Project object */;
 }

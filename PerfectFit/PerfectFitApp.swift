@@ -7,9 +7,14 @@
 
 import SwiftUI
 import SwiftData
+import ComposableArchitecture
 
 @main
 struct PerfectFitApp: App {
+    
+    static let store = Store(initialState: CounterFeature.State()) {
+        CounterFeature()
+      }
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,

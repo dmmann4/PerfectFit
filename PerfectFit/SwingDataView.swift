@@ -8,8 +8,28 @@
 import SwiftUI
 
 struct SwingDataView: View {
+    @State var isLeftHanded: Bool = false
+    @State var swingSpeed: String = ""
+    @State var missLocation: String = ""
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Let us know your swing data")
+            // handedness
+            Toggle(isOn: $isLeftHanded) {
+                Text("Are you left handed?")
+            }
+            // swing speed
+            TextField(text: $swingSpeed) {
+                Text("What's your swing speed?")
+            }
+            // Where is your miss?
+            TextField(text: $missLocation) {
+                Text("Where is your miss?")
+            }
+            Spacer()
+        }
+        .padding(20)
+        
     }
 }
 
