@@ -10,7 +10,7 @@ import SwiftData
 import TabularData
 import ComposableArchitecture
 
-enum ClubType: String, CaseIterable {
+enum ClubType: String, CaseIterable, Codable {
     case wood = "WOODS"
     case hybrid = "HYBRIDS"
     case iron = "IRONS"
@@ -35,14 +35,11 @@ struct Shafts {
 
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-    @State private var shafts: [Shafts] = []
-    var shaftFilesArray: [String] = ["Woods-Table", "Irons-Table", "Wedges-Table", "Hybrids-Table"]
+    let networking = FakeNetworking.shared
     var body: some View {
         NavigationStack {
             TabView {
-                shaftListView()
+                shaftListView(shafts: networking.shafts)
                     .tabItem {
                         Label("All Shafts", systemImage: "list.dash")
                     }
@@ -50,21 +47,19 @@ struct ContentView: View {
                     .tabItem {
                         Label("My Swing", systemImage: "square.and.pencil")
                     }
-                   
             }
-            
             .navigationTitle("Perfect Fit")
             .navigationBarTitleDisplayMode(.large)
-            
         }
-        
     }
     
     private func userSwingDataView() -> some View {
-        CounterView(store: PerfectFitApp.store)
+        SwingDataView(store: PerfectFitApp.store)
     }
     
-    private func shaftListView() -> some View {
+    /// subtabview at the top for shaft category
+    /// search/filter options
+    private func shaftListView(shafts: [Shafts]) -> some View {
         VStack(alignment: .leading) {
             List {
                 ForEach(ClubType.allCases, id: \.self) { clubType in
@@ -98,11 +93,35 @@ struct ContentView: View {
                     }
                 }
             }
-            .onAppear {
-                parseShaftItems()
-            }
         }
     }
+}
+
+#Preview {
+    ContentView()
+        .modelContainer(for: Item.self, inMemory: true)
+}
+
+
+extension FileManager {
+    func listFiles(path: String) -> [URL] {
+        let baseurl: URL = URL(fileURLWithPath: path)
+        var urls = [URL]()
+        enumerator(atPath: path)?.forEach({ (e) in
+            guard let s = e as? String else { return }
+            let relativeURL = URL(fileURLWithPath: s, relativeTo: baseurl)
+            let url = relativeURL.absoluteURL
+            urls.append(url)
+        })
+        return urls
+    }
+}
+
+final class FakeNetworking {
+    static let shared = FakeNetworking()
+    private var shaftFilesArray: [String] = ["Woods-Table", "Irons-Table", "Wedges-Table", "Hybrids-Table"]
+    public var shafts: [Shafts] = []
+    private init() { parseShaftItems() }
     
     private func parseShaftItems() {
         var clubType: ClubType = .unknown
@@ -145,41 +164,5 @@ struct ContentView: View {
                 }
             }
         }
-    }
-    
-    
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
-}
-
-
-extension FileManager {
-    func listFiles(path: String) -> [URL] {
-        let baseurl: URL = URL(fileURLWithPath: path)
-        var urls = [URL]()
-        enumerator(atPath: path)?.forEach({ (e) in
-            guard let s = e as? String else { return }
-            let relativeURL = URL(fileURLWithPath: s, relativeTo: baseurl)
-            let url = relativeURL.absoluteURL
-            urls.append(url)
-        })
-        return urls
     }
 }

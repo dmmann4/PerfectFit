@@ -11,9 +11,9 @@ import ComposableArchitecture
 
 @main
 struct PerfectFitApp: App {
-    
-    static let store = Store(initialState: CounterFeature.State()) {
-        CounterFeature()
+    let networking = FakeNetworking.shared
+    static let store = Store(initialState: FitterFeature.State()) {
+        FitterFeature()
       }
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
