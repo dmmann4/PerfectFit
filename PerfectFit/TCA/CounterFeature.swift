@@ -116,6 +116,33 @@ extension Effect {
 }
 
 
+/// awesome find to do exactly what i want
+/// https://stackoverflow.com/questions/73026499/make-tasks-in-swift-concurrency-run-serially
+actor AsyncSerial<Value: Sendable> {
+    private var previousTask: Task<Value, Error>?
+
+    func add(block: @Sendable @escaping () async throws -> Value) async throws -> Value {
+        let task = Task { [previousTask] in
+            try await withTaskCancellationHandler {
+                let _ = try await previousTask?.value
+            } onCancel: {
+                previousTask?.cancel()
+            }
+
+            return try await block()
+        }
+
+        previousTask = task
+
+        return try await withTaskCancellationHandler {
+            try await task.value
+        } onCancel: {
+            task.cancel()
+        }
+    }
+}
+
+
 /// actual first feature
 /// enter info into textfields
 /// press button to get shaft types
@@ -136,13 +163,13 @@ struct FitterFeature {
     struct State {
         var fitProfile: FitProfile?
         var isLoadingFit = false
-        var shaftsThatFit: [Shafts] = []
+        var shaftsThatFit: [Shaft] = []
         var shouldResetData = false
     }
     
     enum Action {
-        case loadFitProfile(FitProfile, [Shafts])
-        case fitProfileLoaded([Shafts])
+        case loadFitProfile(FitProfile, [Shaft])
+        case fitProfileLoaded([Shaft])
         case resetProfile
     }
     
@@ -151,18 +178,7 @@ struct FitterFeature {
             switch action {
             case .loadFitProfile(let profile, let shafts):
                 state.fitProfile = profile
-                return .run { send in
-                    // run some kind of function to sort and filter
-                    var filteredShafts = shafts.filter { shaft in
-                        return shaft.clubType == profile.clubType
-                    }
-                    if profile.swingSpeed < "50" {
-                        filteredShafts = filteredShafts.filter({ shafts in
-                            return shafts.flex.lowercased() != "s"
-                        })
-                    }
-                    await send(.fitProfileLoaded(filteredShafts))
-                }
+                return .none
             case .fitProfileLoaded(let shafts):
                 state.shaftsThatFit = shafts
                 return .none
@@ -176,19 +192,3 @@ struct FitterFeature {
     }
 }
 
-struct FitProfile: Codable {
-    let swingSpeed: String
-    let attackAngle: String
-    let launchAngle: String
-    let clubType: ClubType
-    let whereIsMiss: MissHitType
-}
-
-enum MissHitType: String, Codable, CaseIterable, Hashable {
-    case left = "left"
-    case right = "right"
-    case thin = "thin"
-    case chunk = "chunk"
-    case short = "short"
-    case long = "long"
-}

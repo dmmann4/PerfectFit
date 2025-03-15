@@ -8,20 +8,8 @@
 import SwiftUI
 import ComposableArchitecture
 
-enum SwingSpeeds: CaseIterable {
-    case senior
-    case regular
-    case stiff
-    case extraStiff
-}
-
-struct SwingDataView: View {
-    var swingSpeedRanges: [SwingSpeeds: String] = [
-        SwingSpeeds.senior: "30-70",
-        SwingSpeeds.regular: "70-90",
-        SwingSpeeds.stiff: "91-110",
-        SwingSpeeds.extraStiff: "111+"
-    ]
+struct TCASwingDataView: View {
+    
     let store: StoreOf<FitterFeature>
     @State var swingSpeed: String = ""
     @State var attackAngle: String = ""
@@ -35,9 +23,9 @@ struct SwingDataView: View {
                     .padding(20)
                 // swing speed
                 Picker("What's your swing speed?", selection: $swingSpeed) {
-                    ForEach(Array(swingSpeedRanges.keys.enumerated()), id:\.element) { key, miss in
-                        Text(self.swingSpeedRanges[miss] ?? "")
-                    }
+//                    ForEach(Array(swingSpeedRanges.keys.enumerated()), id:\.element) { key, miss in
+//                        Text(self.swingSpeedRanges[miss] ?? "")
+//                    }
                 }
                 .padding(20)
                 // attack andgle
@@ -64,7 +52,7 @@ struct SwingDataView: View {
                 .padding(20)
                 Spacer()
                 Button {
-                    store.send(.loadFitProfile(FitProfile(swingSpeed: swingSpeed, attackAngle: attackAngle, launchAngle: launchAngle, clubType: clubType, whereIsMiss: missLocation), FakeNetworking.shared.shafts))
+//                    store.send(.loadFitProfile(FitProfile(swingSpeed: swingSpeed, attackAngle: attackAngle, launchAngle: launchAngle, clubType: clubType, whereIsMiss: missLocation), FakeNetworking.shared.shafts))
                 } label: {
                     Text("Find my fit")
                 }

@@ -12,6 +12,7 @@ import ComposableArchitecture
 @main
 struct PerfectFitApp: App {
     let networking = FakeNetworking.shared
+    @StateObject var launchScreenState = LaunchScreenStateManager()
     static let store = Store(initialState: FitterFeature.State()) {
         FitterFeature()
       }
@@ -30,7 +31,12 @@ struct PerfectFitApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ZStack {
+                ContentView()
+                if launchScreenState.state != .finished {
+                    LaunchScreenView()
+                }
+            }.environmentObject(launchScreenState)
         }
         .modelContainer(sharedModelContainer)
     }

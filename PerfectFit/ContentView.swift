@@ -18,7 +18,7 @@ enum ClubType: String, CaseIterable, Codable {
     case unknown = ""
 }
 
-struct Shafts {
+struct Shaft {
     let name: String
     let clubType: ClubType
     let code: String
@@ -35,6 +35,7 @@ struct Shafts {
 
 
 struct ContentView: View {
+    @EnvironmentObject private var launchScreenState: LaunchScreenStateManager
     let networking = FakeNetworking.shared
     var body: some View {
         NavigationStack {
@@ -43,7 +44,7 @@ struct ContentView: View {
                     .tabItem {
                         Label("All Shafts", systemImage: "list.dash")
                     }
-                userSwingDataView()
+                SwingDataView()
                     .tabItem {
                         Label("My Swing", systemImage: "square.and.pencil")
                     }
@@ -53,43 +54,19 @@ struct ContentView: View {
         }
     }
     
-    private func userSwingDataView() -> some View {
-        SwingDataView(store: PerfectFitApp.store)
-    }
+    
+//    private func userSwingDataView() -> some View {
+//        SwingDataView(store: PerfectFitApp.store)
+//    }
     
     /// subtabview at the top for shaft category
     /// search/filter options
-    private func shaftListView(shafts: [Shafts]) -> some View {
+    private func shaftListView(shafts: [Shaft]) -> some View {
         VStack(alignment: .leading) {
             List {
                 ForEach(ClubType.allCases, id: \.self) { clubType in
                     Section(header: Text(clubType.rawValue)) {
-                        ForEach(shafts, id: \.name) { shaft in
-                            if shaft.clubType == clubType {
-                                VStack {
-                                    HStack(alignment: .top) {
-                                        Text(shaft.name)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                            .font(.headline)
-                                            .fontWeight(.heavy)
-                                        Spacer()
-                                        Text(shaft.material)
-                                            .padding(5)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 10).fill(.gray).opacity(0.3))
-                                            .fontWeight(.bold)
-                                    }
-                                    .padding(.bottom, 24)
-                                    HStack {
-                                        Text(shaft.flex)
-                                        Spacer()
-                                        Text(shaft.launch)
-                                        Spacer()
-                                        Text("\(shaft.weight)g")
-                                    }.fontWeight(.medium)
-                                }
-                            }
-                        }
+                        ShaftsListView(shafts: shafts, clubType: clubType)
                     }
                 }
             }
@@ -120,7 +97,7 @@ extension FileManager {
 final class FakeNetworking {
     static let shared = FakeNetworking()
     private var shaftFilesArray: [String] = ["Woods-Table", "Irons-Table", "Wedges-Table", "Hybrids-Table"]
-    public var shafts: [Shafts] = []
+    public var shafts: [Shaft] = []
     private init() { parseShaftItems() }
     
     private func parseShaftItems() {
@@ -139,7 +116,7 @@ final class FakeNetworking {
                                 clubType = ClubType(rawValue: items[0]) ?? .unknown
                             }
                             if items.count > 10 {
-                                let shaft = Shafts(
+                                let shaft = Shaft(
                                     name: items[0],
                                     clubType: clubType,
                                     code: items[1],
@@ -161,6 +138,41 @@ final class FakeNetworking {
                     }
                 } catch let jsonErr {
                     print("\n Error reading CSV file: \n ", jsonErr)
+                }
+            }
+        }
+    }
+}
+
+struct ShaftsListView: View {
+    
+    let shafts: [Shaft]
+    let clubType: ClubType
+    
+    var body: some View {
+        ForEach(shafts, id: \.name) { shaft in
+            if shaft.clubType == clubType {
+                VStack {
+                    HStack(alignment: .top) {
+                        Text(shaft.name)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.headline)
+                            .fontWeight(.heavy)
+                        Spacer()
+                        Text(shaft.material)
+                            .padding(5)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10).fill(.gray).opacity(0.3))
+                            .fontWeight(.bold)
+                    }
+                    .padding(.bottom, 24)
+                    HStack {
+                        Text(shaft.flex)
+                        Spacer()
+                        Text(shaft.launch)
+                        Spacer()
+                        Text("\(shaft.weight)g")
+                    }.fontWeight(.medium)
                 }
             }
         }
