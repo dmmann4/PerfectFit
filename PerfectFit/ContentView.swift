@@ -10,44 +10,31 @@ import SwiftData
 import TabularData
 import ComposableArchitecture
 
-enum ClubType: String, CaseIterable, Codable {
-    case wood = "WOODS"
-    case hybrid = "HYBRIDS"
-    case iron = "IRONS"
-    case wedge = "WEDGES"
-    case unknown = ""
-}
-
-struct Shaft {
-    let name: String
-    let clubType: ClubType
-    let code: String
-    let MPF: String
-    let material: String
-    let flex: String
-    let weight: String
-    let torque: String
-    let bendPoint: String
-    let tipStiffness: String
-    let launch: String
-    let price: String
-}
-
-
 struct ContentView: View {
     @EnvironmentObject private var launchScreenState: LaunchScreenStateManager
     let networking = FakeNetworking.shared
+    
+    init() {
+        UITableView.appearance().backgroundColor = .corePrimary
+    }
+    
     var body: some View {
         NavigationStack {
-            TabView {
-                shaftListView(shafts: networking.shafts)
-                    .tabItem {
-                        Label("All Shafts", systemImage: "list.dash")
-                    }
-                SwingDataView()
-                    .tabItem {
-                        Label("My Swing", systemImage: "square.and.pencil")
-                    }
+            ZStack {
+                TabView {
+                    SwingDataView()
+                        .tabItem {
+                            Label("My Swing", systemImage: "figure.golf")
+                        }
+                    shaftListView(shafts: networking.shafts)
+                        .tabItem {
+                            Label("All Shafts", systemImage: "cricket.ball")
+                        }
+                    WebKitView(url: URL(string: "https://www.worldwidegolfshops.com/insider/post/how-to-pick-a-golf-shaft-fps")!)
+                        .tabItem {
+                            Label("Club FAQ", systemImage: "questionmark.circle")
+                        }
+                }
             }
             .navigationTitle("Perfect Fit")
             .navigationBarTitleDisplayMode(.large)
@@ -79,102 +66,3 @@ struct ContentView: View {
         .modelContainer(for: Item.self, inMemory: true)
 }
 
-
-extension FileManager {
-    func listFiles(path: String) -> [URL] {
-        let baseurl: URL = URL(fileURLWithPath: path)
-        var urls = [URL]()
-        enumerator(atPath: path)?.forEach({ (e) in
-            guard let s = e as? String else { return }
-            let relativeURL = URL(fileURLWithPath: s, relativeTo: baseurl)
-            let url = relativeURL.absoluteURL
-            urls.append(url)
-        })
-        return urls
-    }
-}
-
-final class FakeNetworking {
-    static let shared = FakeNetworking()
-    private var shaftFilesArray: [String] = ["Woods-Table", "Irons-Table", "Wedges-Table", "Hybrids-Table"]
-    public var shafts: [Shaft] = []
-    private init() { parseShaftItems() }
-    
-    private func parseShaftItems() {
-        var clubType: ClubType = .unknown
-        shaftFilesArray.forEach { file in
-            if let path = Bundle.main.path(forResource: file, ofType: "csv") {
-                let url = URL(fileURLWithPath: path)
-                do {
-                    let data = try Data(contentsOf: url)
-                    let dataEncoded = String(data: data, encoding: .utf8)
-                    if  let dataArr = dataEncoded?.components(separatedBy: "\r\n").map({ $0.components(separatedBy: ";") }) {
-                        for line in 0..<dataArr.count {
-                            let items = dataArr[line][0].components(separatedBy: ",")
-                            
-                            if items.count == 1 {
-                                clubType = ClubType(rawValue: items[0]) ?? .unknown
-                            }
-                            if items.count > 10 {
-                                let shaft = Shaft(
-                                    name: items[0],
-                                    clubType: clubType,
-                                    code: items[1],
-                                    MPF: items[2],
-                                    material: items[3],
-                                    flex: items[4],
-                                    weight: items[5],
-                                    torque: items[6],
-                                    bendPoint: items[7],
-                                    tipStiffness: items[8],
-                                    launch: items[9],
-                                    price: items[10])
-                                shafts.append(shaft)
-                            }
-                        }
-                    }
-                    shafts.forEach { shaft in
-                        print("Type: \(shaft.clubType) - Name: \(shaft.name) - launch: \(shaft.launch)")
-                    }
-                } catch let jsonErr {
-                    print("\n Error reading CSV file: \n ", jsonErr)
-                }
-            }
-        }
-    }
-}
-
-struct ShaftsListView: View {
-    
-    let shafts: [Shaft]
-    let clubType: ClubType
-    
-    var body: some View {
-        ForEach(shafts, id: \.name) { shaft in
-            if shaft.clubType == clubType {
-                VStack {
-                    HStack(alignment: .top) {
-                        Text(shaft.name)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .font(.headline)
-                            .fontWeight(.heavy)
-                        Spacer()
-                        Text(shaft.material)
-                            .padding(5)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10).fill(.gray).opacity(0.3))
-                            .fontWeight(.bold)
-                    }
-                    .padding(.bottom, 24)
-                    HStack {
-                        Text(shaft.flex)
-                        Spacer()
-                        Text(shaft.launch)
-                        Spacer()
-                        Text("\(shaft.weight)g")
-                    }.fontWeight(.medium)
-                }
-            }
-        }
-    }
-}

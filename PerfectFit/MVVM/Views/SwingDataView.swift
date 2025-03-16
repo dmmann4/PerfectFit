@@ -15,12 +15,14 @@ struct SwingDataView: View {
         NavigationStack {
             VStack {
                 TextField(text: $viewModel.fitProfile.carryDistance) {
-                    Text("What would you say your average driver carry distance is?")
+                    Text("Enter average driver carry distance")
                 }
+                .textFieldStyle(RoundedTextfieldView())
                 .padding(20)
                 TextField(text: $viewModel.fitProfile.swingSpeed) {
-                    Text("What is your avarage swing speed with your driver??")
+                    Text("Enter avarage driver swing speed")
                 }
+                .textFieldStyle(RoundedTextfieldView())
                 .padding(20)
                 Button {
                     viewModel.isLoadingResults = true
@@ -31,7 +33,8 @@ struct SwingDataView: View {
                 } label: {
                     Text("Find my fit!")
                 }
-
+                .buttonStyle(.bordered)
+                Spacer()
                 NavigationLink(destination: EquipmentResultsView(viewModel: viewModel), isActive: $viewModel.isSHowingResults) {
                     EmptyView()
                 }
@@ -46,10 +49,12 @@ struct EquipmentResultsView: View {
     
     var body: some View {
         VStack {
-            Text("Here are the shafts that would work best for you!")
-                .padding(20)
-            ShaftsListView(shafts: viewModel.sortedShafts, clubType: .wood)
+            Text("We've found \(viewModel.sortedShafts.count) shafts that would work best for you!")
+            List {
+                ShaftsListView(shafts: viewModel.sortedShafts, clubType: .wood)
+            }
             Spacer()
         }
+        .padding(20)
     }
 }

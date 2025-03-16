@@ -5,6 +5,8 @@
 //  Created by Mann Fam on 3/13/25.
 //
 
+import Foundation
+
 enum StaffStiffness: String, CaseIterable {
     case senior = "Senior"
     case regular = "Regular"

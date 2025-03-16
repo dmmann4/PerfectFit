@@ -56,7 +56,7 @@ class SwingDataViewModel: ObservableObject {
     @Published var isLoadingResults: Bool = false
     @Published var isSHowingResults: Bool = false
     @Published var sortedShafts: [Shaft] = []
-    @Published var fitProfile: FitProfile = FitProfile(swingSpeed: "300", carryDistance: "100")
+    @Published var fitProfile: FitProfile = FitProfile(swingSpeed: "", carryDistance: "")
 
     
     public func findShafts(completion: @escaping (Bool) -> Void) {
