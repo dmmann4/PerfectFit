@@ -57,7 +57,7 @@ class SwingDataViewModel: ObservableObject {
     @Published var isSHowingResults: Bool = false
     @Published var sortedShafts: [Shaft] = []
     @Published var fitProfile: FitProfile = FitProfile(swingSpeed: "", carryDistance: "")
-
+    @Published var clubType: ClubType = .wood
     
     public func findShafts(completion: @escaping (Bool) -> Void) {
         /// calc what stiffness based on swing speed
@@ -73,7 +73,7 @@ class SwingDataViewModel: ObservableObject {
 //        }
        
         let shaftsThatFit = networking.shafts.filter { (shaft) -> Bool in
-            return shaft.flex.lowercased() == staffStiffness.stringCategory.lowercased() && shaft.clubType == .wood
+            return shaft.flex.lowercased() == staffStiffness.stringCategory.lowercased() && shaft.clubType == clubType
         }
         self.sortedShafts = shaftsThatFit
         completion(true)

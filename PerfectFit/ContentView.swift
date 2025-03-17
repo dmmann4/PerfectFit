@@ -26,7 +26,7 @@ struct ContentView: View {
                         .tabItem {
                             Label("My Swing", systemImage: "figure.golf")
                         }
-                    shaftListView(shafts: networking.shafts)
+                    ShaftsListView(shafts: networking.shafts)
                         .tabItem {
                             Label("All Shafts", systemImage: "cricket.ball")
                         }
@@ -40,26 +40,10 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.large)
         }
     }
-    
-    
-//    private func userSwingDataView() -> some View {
-//        SwingDataView(store: PerfectFitApp.store)
-//    }
+}
     
     /// subtabview at the top for shaft category
     /// search/filter options
-    private func shaftListView(shafts: [Shaft]) -> some View {
-        VStack(alignment: .leading) {
-            List {
-                ForEach(ClubType.allCases, id: \.self) { clubType in
-                    Section(header: Text(clubType.rawValue)) {
-                        ShaftsListView(shafts: shafts, clubType: clubType)
-                    }
-                }
-            }
-        }
-    }
-}
 
 #Preview {
     ContentView()

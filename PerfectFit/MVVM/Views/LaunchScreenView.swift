@@ -52,6 +52,7 @@ struct LaunchScreenView: View {
                     .font(.system(size: 64, weight: .bold, design: .serif))
                     .padding(.bottom, 400)
                     .opacity(titleOpactiy ? 1.0 : 0.0)
+                    .foregroundStyle(Color.white)
                 Spacer()
         }.onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {

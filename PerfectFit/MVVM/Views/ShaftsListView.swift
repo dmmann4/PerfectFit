@@ -10,11 +10,12 @@ import SwiftUI
 struct ShaftsListView: View {
     
     let shafts: [Shaft]
-    let clubType: ClubType
     
     var body: some View {
-        ForEach(shafts, id: \.name) { shaft in
-            if shaft.clubType == clubType {
+        List(shafts) { shaft in
+            NavigationLink {
+                ShaftDetailView(shaft: shaft)
+            } label: {
                 VStack {
                     HStack(alignment: .top) {
                         Text(shaft.name)
@@ -37,6 +38,7 @@ struct ShaftsListView: View {
                         Text("\(shaft.weight)g")
                     }.fontWeight(.medium)
                 }
+                
             }
         }
     }

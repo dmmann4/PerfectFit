@@ -24,6 +24,13 @@ struct SwingDataView: View {
                 }
                 .textFieldStyle(RoundedTextfieldView())
                 .padding(20)
+                Picker("Select Club type", selection: $viewModel.clubType) {
+                    ForEach(ClubType.allCases) { club in
+                        Text(club.stringVal)
+                    }
+                }
+                .pickerStyle(.navigationLink)
+                .padding(20)
                 Button {
                     viewModel.isLoadingResults = true
                     viewModel.findShafts() { success in
@@ -35,26 +42,26 @@ struct SwingDataView: View {
                 }
                 .buttonStyle(.bordered)
                 Spacer()
+                Button {
+                    viewModel.fitProfile.carryDistance = ""
+                    viewModel.fitProfile.swingSpeed = ""
+                } label: {
+                    Text("Reset")
+                }
+                .buttonStyle(.borderless)
+                .padding(20)
                 NavigationLink(destination: EquipmentResultsView(viewModel: viewModel), isActive: $viewModel.isSHowingResults) {
                     EmptyView()
                 }
+                
             }
+            .background(Color.corePrimary)
+            .foregroundStyle(Color.white)
         }
     }
 }
 
-struct EquipmentResultsView: View {
-    
-    @ObservedObject var viewModel: SwingDataViewModel
-    
-    var body: some View {
-        VStack {
-            Text("We've found \(viewModel.sortedShafts.count) shafts that would work best for you!")
-            List {
-                ShaftsListView(shafts: viewModel.sortedShafts, clubType: .wood)
-            }
-            Spacer()
-        }
-        .padding(20)
-    }
+#Preview {
+    SwingDataView(viewModel: SwingDataViewModel())
 }
+

@@ -14,7 +14,7 @@ final class FakeNetworking {
     private init() { parseShaftItems() }
     
     private func parseShaftItems() {
-        var clubType: ClubType = .unknown
+        var clubType: ClubType = .wood
         shaftFilesArray.forEach { file in
             if let path = Bundle.main.path(forResource: file, ofType: "csv") {
                 let url = URL(fileURLWithPath: path)
@@ -26,7 +26,7 @@ final class FakeNetworking {
                             let items = dataArr[line][0].components(separatedBy: ",")
                             
                             if items.count == 1 {
-                                clubType = ClubType(rawValue: items[0]) ?? .unknown
+                                clubType = ClubType(rawValue: items[0]) ?? .wood
                             }
                             if items.count > 10 {
                                 let shaft = Shaft(

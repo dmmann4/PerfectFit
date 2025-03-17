@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Shaft {
+struct Shaft: Identifiable {
+    var id: UUID = UUID()
     let name: String
     let clubType: ClubType
     let code: String
@@ -20,4 +21,19 @@ struct Shaft {
     let tipStiffness: String
     let launch: String
     let price: String
+    
+    
+    static let sampleShaft: Shaft = Shaft(
+        name: "Diamana GT Series 40",
+        clubType: .wood,
+        code: "MR0102",
+        MPF: "2D1S",
+        material: "Graphite",
+        flex: "R2",
+        weight: "46",
+        torque: "5.6",
+        bendPoint: "mid/high",
+        tipStiffness: "med/firm",
+        launch: "low/mid",
+        price: "$360.00")
 }
