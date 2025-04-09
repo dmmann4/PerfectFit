@@ -42,17 +42,24 @@ enum StaffStiffness: String, CaseIterable {
     }
 }
 
-
-
 struct FitProfile: Codable {
     var swingSpeed: String
     var carryDistance: String
-//    let attackAngle: String?
-//    let launchAngle: String?
-//    let clubType: ClubType?
-//    let whereIsMiss: MissHitType?
+    let attackAngle: String?
+    let launchAngle: String?
+    let spinRate: String?
+    let whereIsMiss: MissHitType?
+    let smashFactor: Double?
     
-    
+    init(swingSpeed: String, carryDistance: String, attackAngle: String? = nil, launchAngle: String? = nil, whereIsMiss: MissHitType? = nil, spinRate: String? = nil, smashFactor: Double? = nil) {
+        self.swingSpeed = swingSpeed
+        self.carryDistance = carryDistance
+        self.attackAngle = attackAngle
+        self.launchAngle = launchAngle
+        self.whereIsMiss = whereIsMiss
+        self.spinRate = spinRate
+        self.smashFactor = smashFactor
+    }
 }
 
 enum MissHitType: String, Codable, CaseIterable, Hashable {

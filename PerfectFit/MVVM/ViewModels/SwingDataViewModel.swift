@@ -64,18 +64,7 @@ class SwingDataViewModel: ObservableObject {
         guard let speed: Int = Int(fitProfile.swingSpeed) else {
             return
         }
-        let staffStiffness: StaffStiffness = StaffStiffness(speed: speed) ?? .senior
-//        let sortedShafts = networking.shafts.sorted { (shaft1, shaft2) -> Bool in
-//            return shaft1.flex < shaft2.flex
-//        }
-//        sortedShafts.forEach { shaft in
-//            print("Shaft stiffness -- \(shaft.flex)")
-//        }
-       
-        let shaftsThatFit = networking.shafts.filter { (shaft) -> Bool in
-            return shaft.flex.lowercased() == staffStiffness.stringCategory.lowercased() && shaft.clubType == clubType
-        }
-        self.sortedShafts = shaftsThatFit
+        sortedShafts = calcFitting(clubType: .wood, swingSpeed: speed, carryDistance: Int(fitProfile.carryDistance) ?? 0, handedness: "right", prefrences: [])
         completion(true)
     }
     

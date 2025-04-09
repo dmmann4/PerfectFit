@@ -10,19 +10,25 @@ import SwiftUI
 struct SwingDataView: View {
     
     @ObservedObject var viewModel = SwingDataViewModel()
+    private let swingSpeed: [String] = ["60", "70", "80", "90", "100", "110", "120", "130", "140", "150", "160", "180"]
+    private let carryDistance: [String] = ["120", "130", "140", "150", "160", "170", "180", "190", "200", "210", "220", "230", "240", "250", "260", "270", "280", "290", "300"]
     
     var body: some View {
         NavigationStack {
             VStack {
-                TextField(text: $viewModel.fitProfile.carryDistance) {
-                    Text("Enter average driver carry distance")
+                Picker("Approx Carry Distance", selection: $viewModel.fitProfile.carryDistance) {
+                    ForEach(carryDistance, id: \.self) { distance in
+                        Text(distance)
+                    }
                 }
-                .textFieldStyle(RoundedTextfieldView())
+                .pickerStyle(.navigationLink)
                 .padding(20)
-                TextField(text: $viewModel.fitProfile.swingSpeed) {
-                    Text("Enter avarage driver swing speed")
+                Picker("Approx swing speed", selection: $viewModel.fitProfile.swingSpeed) {
+                    ForEach(swingSpeed, id: \.self) { speed in
+                        Text(speed)
+                    }
                 }
-                .textFieldStyle(RoundedTextfieldView())
+                .pickerStyle(.navigationLink)
                 .padding(20)
                 Picker("Select Club type", selection: $viewModel.clubType) {
                     ForEach(ClubType.allCases) { club in
@@ -55,8 +61,6 @@ struct SwingDataView: View {
                 }
                 
             }
-            .background(Color.corePrimary)
-            .foregroundStyle(Color.white)
         }
     }
 }

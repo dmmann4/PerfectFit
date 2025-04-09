@@ -17,8 +17,9 @@ struct EquipmentResultsView: View {
                 .multilineTextAlignment(.center)
                 .fontWeight(.bold)
             ShaftsListView(shafts: viewModel.sortedShafts)
+                .background(Color.clear)
             Spacer()
         }
-        .padding(20)
+        .padding(.vertical, 20)
     }
 }

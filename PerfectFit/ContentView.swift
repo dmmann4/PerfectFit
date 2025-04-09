@@ -14,10 +14,6 @@ struct ContentView: View {
     @EnvironmentObject private var launchScreenState: LaunchScreenStateManager
     let networking = FakeNetworking.shared
     
-    init() {
-        UITableView.appearance().backgroundColor = .corePrimary
-    }
-    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -38,6 +34,11 @@ struct ContentView: View {
             }
             .navigationTitle("Perfect Fit")
             .navigationBarTitleDisplayMode(.large)
+            .onAppear {
+                let networkkin = EbayNetworking()
+                networkkin.startAuthFlow()
+                networkkin.getRelatedItems()
+            }
         }
     }
 }

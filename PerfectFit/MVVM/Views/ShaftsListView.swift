@@ -40,6 +40,9 @@ struct ShaftsListView: View {
                 }
                 
             }
+            
         }
+        .scrollContentBackground(.hidden)
+        .background(Color.clear)
     }
 }

@@ -39,10 +39,7 @@ struct ShaftDetailView: View {
             .padding(.vertical, 50)
             .padding(.horizontal, 20)
             Spacer()
-        }
-        .background(Color.corePrimary)
-        .foregroundStyle(Color.white)
-        
+        }        
     }
 }
 
