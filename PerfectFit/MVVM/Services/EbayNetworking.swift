@@ -20,12 +20,7 @@ struct JSONAccessToken: Decodable {
 }
 
 class EbayNetworking {
-    /// app ID
-    let appID = "DavidMan-Swings-SBX-2aff7f88c-d52cbd21"
-    /// dev ID
-    let devID = "b4ac3357-fe3b-4bf4-9043-ca5cc8c7cc76"
-    /// cert ID
-    let certID = "SBX-aff7f88cc669-2e86-4222-86ee-bec5"
+    
     
     /// search path
     let itemSearchPath =  "/item_summary/search?"
